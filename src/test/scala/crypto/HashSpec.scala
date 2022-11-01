@@ -86,4 +86,18 @@ class HashSpec extends AnyFlatSpec with should.Matchers {
         result.toString shouldBe "5a623d6c7a7a7d337c6f6a040a054e7f"
     }
 
+    it should "recover original message" in {
+        val iv: Block = Block.create(LazyList.continually(0xCC) map (_.toByte) take 16)
+        val message: String = "Hello World!"
+        val block = message.getBytes
+        import crypto.BlockMessage.Xor
+//      val target: BlockHash = BlockHash((r, b) => r.xor(b), Block(new Array[Byte](16)))
+        val target: BlockHash = BlockHash((r, b) => r.xor(b), iv)
+        val message_hash: Block = target.hash(BlockMessage.apply("Hello World!"))
+        val messageLength = block.length
+        val result: Block = Block.pad(messageLength)(block)
+        println("result: "+result)
+        println("message_hash.xor(iv): "+message_hash.xor(iv))
+        message_hash.xor(iv).toString shouldBe result.toString
+    }
 }
