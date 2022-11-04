@@ -123,17 +123,17 @@ public class hybridEncryption {
         KeyPair bob_key_pair = generateKeyPair();
         String filepath = args[0];
         String bob_public_key_path = args[1];
-        String bob_private_key_path = args[2];
-        String encrypted_filepath = encryptMessageFile(alice_symmetric_key, filepath);
-//        System.out.println("encoded_message: "+plain_text);
-        String encoded_key_path = encryptKey(alice_symmetric_key, bob_public_key_path);
-//        System.out.println("encoded_key: "+encoded_key);
-//
-        String decrypted_key_path = decryptKey(encoded_key_path, bob_private_key_path);
-//        System.out.println("decrypted_key: "+decrypted_key);
-//
-        String decoded_message = decryptMessage(decrypted_key_path, encrypted_filepath);
-        System.out.println("decoded_message: "+decoded_message);
 
+        String encrypted_filepath = encryptMessageFile(alice_symmetric_key, filepath);
+        System.out.println("encrypted_filepath: "+encrypted_filepath);
+        String encoded_key_path = encryptKey(alice_symmetric_key, bob_public_key_path);
+        System.out.println("encoded_key_path: "+encoded_key_path);
+//
+        if(args.length > 2) {
+            String bob_private_key_path = args[2];
+            String decrypted_key_path = decryptKey(encoded_key_path, bob_private_key_path);
+            String decoded_message = decryptMessage(decrypted_key_path, encrypted_filepath);
+            System.out.println("decoded_message: " + decoded_message);
+        }
     }
 }
